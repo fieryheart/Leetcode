@@ -25,11 +25,11 @@ public:
 };
 int main()
 {
-    vector<int> nums;
-    nums.push_back(2);
-    nums.push_back(7);
-    nums.push_back(11);
-    nums.push_back(15);
+    vector<int> nums = {2, 7, 11, 15};
+    // nums.push_back(2);
+    // nums.push_back(7);
+    // nums.push_back(11);
+    // nums.push_back(15);
     int target = 9;
     Solution s;
     vector<int> rst = s.twoSum(nums, target);
