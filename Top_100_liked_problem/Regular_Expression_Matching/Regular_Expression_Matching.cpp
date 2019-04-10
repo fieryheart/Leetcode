@@ -1,54 +1,25 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 class Solution {
 public:
+    // DP
     bool isMatch(string s, string p) {
-        int idxs = 0, idxp = 0;
-        while(idxs < s.length() || idxp < p.length()) {
-            if(idxp+1 < p.length() && p[idxp+1] == '*') {
-                if(p[idxp] == '.') {
-                    if(idxp+2 == p.length()) return true;
-                    else {
-                        bool flag = false;
-                        for(int i = idxs; i < s.length(); ++i) {
-                            if(s[i] == p[idxp+2]) {
-                                flag = flag || this->isMatch(s.substr(i), p.substr(idxp+2));
-                            }
-                        }
-                        return flag;
-                    }
-                }
-                else if(s[idxs] == p[idxp]) {
-                    int i_s = idxs, i_p = idxp+2, count_s = 0, count_p = 0;
-                    while(i_s < s.length() && s[i_s] == p[idxp]) {
-                        i_s++;
-                        count_s++;
-                    }
-                    while(i_p < p.length() && p[i_p] == p[idxp]) {
-                        i_p++;
-                        count_p++;
-                    }
-                    if(count_s >= count_p) {
-                        idxs = i_s;
-                        idxp = i_p;
-                    } else return false;
+        int m = s.length(), n = p.length();
+        vector< vector<bool> > dp(m+1, vector<bool>(n+1, false));
+        dp[0][0] = true;
+        for(int i = 0; i <= m; ++i)
+        {
+            for(int j = 1; j <= n; ++j)
+            {
+                if(p[j-1] != '*') {
+                    dp[i][j] = i && dp[i-1][j-1] && (s[i-1] == p[j-1] || p[j-1] == '.');
                 } else {
-                    idxp += 2;
-                }
-            } else {
-                if(p[idxp] == '.' || s[idxs] == p[idxp]) {
-                    idxs++;
-                    idxp++;
-                } else {
-                    break;
+                    dp[i][j] = dp[i][j-2] || (i && dp[i-1][j] && (s[i-1] == p[j-2] || p[j-2] == '.'));
                 }
             }
         }
-        if(idxs == s.length() && idxp == p.length()) {
-            return true;
-        } else {
-            return false;
-        }
+        return dp[m][n];
     }
 };
 int main()
