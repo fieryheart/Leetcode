@@ -31,80 +31,96 @@ ListNode * createList(vector<int> nums)
 }
 class Solution {
 public:
-    ListNode * createList(vector<int> nums)
-    {
-        ListNode *head, *next;
-        for(int i = 0; i < nums.size(); ++i)
-        {
-            ListNode* temp = new ListNode(nums[i]);
-            if(i == 0) head = next = temp;
-            else {
-                next->next = temp;
-                next = temp;
-            }
-        }
-        return head;
-    }
     ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
-        ListNode *head, *temp, *next;
-        head = next = temp = NULL;
-        while(l1 && l2) {
-            if(l1->val < l2->val){
-                temp = new ListNode(l1->val);
-                l1 = l1->next;
-            } else {
-                temp = new ListNode(l2->val);
-                l2 = l2->next;
-            }
-            if(!head) head = next = temp;
-            else {
-                next->next = temp;
-                next = temp;
-            }
-        }
-        if(head) {
-            if(l1) next->next = l1;
-            if(l2) next->next = l2;
+        if(l1 == NULL) return l2;
+        if(l2 == NULL) return l1;
+        if(l1->val <= l2->val) {
+            l1->next = this->mergeTwoLists(l1->next, l2);
+            return l1;
         } else {
-            head = l1 ? l1 : l2 ? l2 : NULL;
+            l2->next = this->mergeTwoLists(l1, l2->next);
+            return l2;
         }
-        return head;
     }
-    ListNode* mergeKLists(vector<ListNode*>& lists) {
-        ListNode *rst = NULL;
-        if(lists.size() < 10000){
-            for(int i = 0; i < lists.size(); ++i)
-            {
-                rst = this->mergeTwoLists(rst, lists[i]);
+    ListNode* mergeKLists1(vector<ListNode*>& lists) {
+        if(lists.size() == 0) return NULL;
+        for(int i = 1; i < lists.size(); ++i)
+            lists[0] = this->mergeTwoLists(lists[0], lists[i]);
+        return lists[0];
+    }
+    ListNode* mergeKLists2(vector<ListNode*>& lists) {
+        ListNode *rst = NULL, *last = NULL;
+        vector<ListNode*> lists_temp = lists;
+        int minNum = INT_MAX, idx = -1, idx_temp;
+        for(int i = 0; i < lists_temp.size(); ++i) {
+            if(lists_temp[i] && lists_temp[i]->val < minNum) {
+                minNum = lists_temp[i]->val;
+                idx = i;
             }
-        } else {
-            vector<int> temp;
-            for(int i = 0; i < lists.size(); ++i)
-            {
-                while(lists[i]) {
-                    temp.push_back(lists[i]->val);
-                    lists[i] = lists[i]->next;
+        }
+        if(idx != -1) {
+            rst = last = lists_temp[idx];
+            lists_temp[idx] = lists_temp[idx]->next;
+        }
+        while(lists_temp.size()) {
+            minNum = INT_MAX, idx = -1, idx_temp = -1;
+            vector<ListNode*> temp;
+            // 这里寻找最小值要换成构建一个最小堆，不然时间复杂度会很大，且不需要temp，此算法实现在mergeKLists3方法
+            for(int i = 0; i < lists_temp.size(); ++i) {
+                // cout << lists_temp[i] << endl;
+                if(lists_temp[i]) {
+                    if(lists_temp[i]->val < minNum) {
+                        minNum = lists_temp[i]->val;
+                        idx = i;
+                        idx_temp = temp.size();
+                    }
+                    temp.push_back(lists_temp[i]);
                 }
             }
-            sort(temp.begin(), temp.end());
-            rst = this->createList(temp);
+            // cout << idx << endl;
+            if(idx != -1) {
+                last->next = lists_temp[idx];
+                last = last->next;
+                lists_temp[idx_temp] = lists_temp[idx_temp]->next;
+            }
         }
-
         return rst;
+    }
+    static bool heapComp(ListNode* a, ListNode* b) {
+            return a->val > b->val;
+    }
+    ListNode* mergeKLists(vector<ListNode*>& lists) { //make_heap
+        ListNode head(0);
+        ListNode *curNode = &head;
+        vector<ListNode*> v;   
+        for(int i =0; i<lists.size(); i++){
+            if(lists[i]) v.push_back(lists[i]);
+        }
+        make_heap(v.begin(), v.end(), heapComp); //vector -> heap data strcture
+
+        while(v.size()>0){
+            curNode->next=v.front();
+            pop_heap(v.begin(), v.end(), heapComp); 
+            v.pop_back(); 
+            curNode = curNode->next;
+            if(curNode->next) {
+                v.push_back(curNode->next); 
+                push_heap(v.begin(), v.end(), heapComp);
+            }
+        }
+        return head.next;
     }
 };
 int main()
 {
-    vector<vector<int>> nums = {{1, 4, 5},
-                                  {1, 3, 4},
-                                  {2, 6}};
+    vector<vector<int>> nums = {{}};
     vector<ListNode*> lists;
     for(int i = 0; i < nums.size(); ++i)
     {
         lists.push_back(createList(nums[i]));
     }
     Solution s;
-    ListNode *rst = s.mergeKLists(lists);
+    ListNode *rst = s.mergeKLists2(lists);
     while(rst) {
         cout << rst->val;
         if(rst->next) cout << "->";
