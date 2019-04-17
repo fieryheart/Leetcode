@@ -5,7 +5,8 @@ using namespace std;
 
 class Solution {
     public:
-        int lengthOfLongestSubstring(string s) {
+        // 不够快
+        int lengthOfLongestSubstring1(string s) {
             int maxl = 0, sub_num = 0, sub_start = 0, idx = 0;
             int ascii[127];
             vector<char> v;
@@ -31,6 +32,17 @@ class Solution {
             }
             return maxl;
         }
+        // 参考代码，9行
+        int lengthOfLongestSubstring2(string s) {
+            vector<int> ascii(128, -1);
+            int maxl = 0, start = -1;
+            for(int i = 0; i < s.length(); ++i) {
+                if(ascii[s[i]] > start) start = ascii[s[i]];
+                ascii[s[i]] = i;
+                maxl = max(maxl, i-start);
+            }
+            return maxl;
+        }
 };
 
 
@@ -38,7 +50,7 @@ int main()
 {
     string str = "abcabcbb";
     Solution s;
-    int rst = s.lengthOfLongestSubstring(str);
+    int rst = s.lengthOfLongestSubstring1(str);
     cout << rst << endl;
     return 0;
 }

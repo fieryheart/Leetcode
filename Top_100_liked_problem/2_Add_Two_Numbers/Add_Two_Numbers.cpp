@@ -18,7 +18,7 @@ struct ListNode {
 
 ListNode* createList(vector<int> &v)
 {
-    ListNode *l, *last;
+    ListNode *l = NULL, *last = NULL;
     for(int i = 0; i < v.size(); i++)
     {
         ListNode* temp = new ListNode(v[i]);
@@ -35,7 +35,7 @@ ListNode* createList(vector<int> &v)
 
 class Solution {
 public:
-    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+    ListNode* addTwoNumbers1(ListNode* l1, ListNode* l2) {
         vector<int> v1, v2, v;
         ListNode* rst;
         while(l1) {
@@ -65,16 +65,44 @@ public:
         rst = createList(v);
         return rst;
     }
+    ListNode* addTwoNumbers2(ListNode* l1, ListNode* l2) {
+        ListNode *rst = NULL, *l1_temp = l1, *l2_temp = l2, *l1_last, *l2_last;
+        int carry = 0, l1_count = 0, l2_count = 0, x, y, sum;
+        while(l1_temp || l2_temp) {
+            x = l1_temp ? l1_temp->val : 0;
+            y = l2_temp ? l2_temp->val : 0;
+            sum = (x+y+carry) % 10;
+            carry = (x+y+carry) / 10;
+            if(l1_temp) {
+                l1_temp->val = sum;
+                l1_last = l1_temp;
+                l1_temp = l1_temp->next;
+                l1_count++;
+            }
+            if(l2_temp) {
+                l2_temp->val = sum;
+                l2_last = l2_temp;
+                l2_temp = l2_temp->next;
+                l2_count++;
+            }
+        }
+        if(carry) {
+            if(l1_count < l2_count) l2_last->next = new ListNode(carry);
+            else l1_last->next = new ListNode(carry);
+        }
+        rst = l1_count < l2_count ? l2 : l1;
+        return rst;
+    }
 };
 
 int main()
 {
-    vector<int> v1 = {2, 4, 3};
-    vector<int> v2 = {5, 6, 4};
+    vector<int> v1 = {1};
+    vector<int> v2 = {9,9,9,9};
     ListNode *l1 = createList(v1);
     ListNode *l2 = createList(v2);
     Solution s;
-    ListNode* l = s.addTwoNumbers(l1, l2);
+    ListNode* l = s.addTwoNumbers2(l1, l2);
     vector<int> v;
     while(l) {
         v.push_back(l->val);

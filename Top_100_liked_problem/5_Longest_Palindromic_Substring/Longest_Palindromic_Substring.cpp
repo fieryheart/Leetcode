@@ -3,7 +3,7 @@ using namespace std;
 
 class Solution {
 public:
-    string longestPalindrome(string s) {
+    string longestPalindrome1(string s) {
         string s1 = "#";
         for(int i = 0; i < s.length(); i++)
         {
@@ -33,13 +33,33 @@ public:
         rst = s1;
         return rst;
     }
+    string longestPalindrome2(string s) {
+        if(s.length() < 2) return s;
+        int maxl = 0, start = 0;
+        for(int i = 0; s.length() - i > maxl / 2; ) {
+            int left, right;
+            left = right = i;
+            while(right+1 < s.length() && s[right+1] == s[right]) right++;
+            i = right+1;
+            while(right+1 < s.length() && left > 0 && s[left-1] == s[right+1]) {
+                left--;
+                right++;
+            }
+            if(right-left+1 > maxl) {
+                maxl = right-left+1;
+                start = left;
+            }
+            
+        }
+        return s.substr(start, maxl);
+    }
 };
 
 int main()
 {
     string str = "cbbd";
     Solution s;
-    string rst = s.longestPalindrome(str);
+    string rst = s.longestPalindrome2(str);
     cout << rst << endl;
     return 0;
 }
