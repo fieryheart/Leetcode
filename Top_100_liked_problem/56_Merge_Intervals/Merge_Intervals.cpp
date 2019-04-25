@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
+#include <map>
 using namespace std;
 class Solution {
 public:
@@ -18,7 +18,7 @@ public:
 };
 int main()
 {
-    vector<vector<int>> intervals = {{1,4},{0,0}};
+    vector<vector<int>> intervals = {{1,3},{2,6},{8,10}, {15,18}};
     Solution s;
     vector<vector<int>> rst = s.merge(intervals);
     for(int i = 0; i < rst.size(); ++i) {
