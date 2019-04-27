@@ -4,28 +4,33 @@ using namespace std;
 class Solution {
 public:
     string minWindow(string s, string t) {
-        map<char, int> sascii, tascii;
-        for(int i = 0; i < t.length(); ++i)
-            tascii[t[i]]++;
-        for(int i = 0; i < s.length(); ++i)
-            if(tascii[s[i]])
-                sascii[s[i]]++;
-        for(auto it = tascii.begin(); it != tascii.end(); ++it)
-            if(it->second > sascii[it->first])
-                return "";
-        int start = 0, endd = s.length()-1;
-        while(start <= endd) {
-            if(tascii[s[start]] && sascii[s[start]] == tascii[s[start]]) break;
-            if(tascii[s[start]]) sascii[s[start]]--;
-            start++;
+        int slen = s.length(), tlen = t.length(), start = 0, minL = INT_MAX, minS = -1, count = 0, temp_count = 0;
+        map<char, int> tmapp, temp_mapp;
+        for(int i = 0; i < tlen; ++i) {
+            if(tmapp[t[i]] == 0) count++;
+            tmapp[t[i]]++;
         }
-        while(endd >= start) {
-            if(tascii[s[endd]] && sascii[s[endd]] == tascii[s[endd]]) break;
-            if(tascii[s[endd]]) sascii[s[endd]]--;
-            endd--;
+        for(int i = 0; i < slen; ++i) {
+            if(tmapp[s[i]]) {
+                temp_mapp[s[i]]++;
+                if(temp_mapp[s[i]] == tmapp[s[i]]) temp_count++;
+                if(temp_count == count) {
+                    while(tmapp[s[start]] == 0 || temp_mapp[s[start]] > tmapp[s[start]]) {
+                        if(tmapp[s[start]]) temp_mapp[s[start]]--;
+                        start++;
+                    }
+                    if(i - start + 1 < minL) {
+                        minL = i - start + 1;
+                        minS = start;
+                    }
+                    temp_mapp[s[start]]--;
+                    temp_count--;
+                    start++;           
+                }
+            }
         }
-        if(start <= endd) return s.substr(start, endd-start+1);
-        else return "";
+        if(minS == -1) return "";
+        else return s.substr(minS, minL);
     }
 };
 int main()
