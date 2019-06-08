@@ -11,8 +11,8 @@ public:
             if(jump[i] == false || i+nums[i] <= max_jump) continue;
             for(int j = 1; i+j < nums.size() && j <= nums[i]; ++j) {
                 jump[i+j] = true;
-                max_jump = i+j;
-            } 
+            }
+            max_jump = max(max_jump, i+nums[i]);
         }
         return jump[nums.size()-1];
     }

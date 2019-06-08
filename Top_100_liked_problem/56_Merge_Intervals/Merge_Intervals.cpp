@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <queue>
 #include <map>
 using namespace std;
 class Solution {
@@ -15,12 +16,48 @@ public:
         }
         return ans;
     }
+    vector<vector<int>> merge1(vector<vector<int>>& intervals) {
+        if(intervals.empty()) return intervals;
+        vector<vector<int>> temp;
+        while(true) {
+            queue<int> toMerge, unMerge;
+            for(int i = 0; i < intervals.size(); ++i)
+                toMerge.push(i);
+            while(!toMerge.empty()) {
+                int v = toMerge.front();
+                toMerge.pop();
+                int vl = intervals[v][0], vr = intervals[v][1];
+                while(!toMerge.empty()) {
+                    int w = toMerge.front();
+                    toMerge.pop();
+                    int wl = intervals[w][0], wr = intervals[w][1];
+                    if((wl >= vl && wl <= vr)
+                    || (wr >= vl && wr <= vr)
+                    || (wl <= vl && wr >= vr)
+                    || (wl >= vl && wr <= vr)) {
+                        vl = min(vl, wl);
+                        vr = max(vr, wr);
+                    } else unMerge.push(w);
+                }
+                while(!unMerge.empty()) {
+                    toMerge.push(unMerge.front());
+                    unMerge.pop();
+                }
+                temp.push_back({vl, vr});
+            }
+
+            if(temp.size() == intervals.size()) break;
+            intervals = temp;
+            temp.clear();
+        }
+        return intervals;
+    }
 };
 int main()
 {
-    vector<vector<int>> intervals = {{1,3},{2,6},{8,10}, {15,18}};
+    vector<vector<int>> intervals = {{1,4},{0,0}};
     Solution s;
-    vector<vector<int>> rst = s.merge(intervals);
+    vector<vector<int>> rst = s.merge1(intervals);
     for(int i = 0; i < rst.size(); ++i) {
         for(int j = 0; j < rst[i].size(); ++j) {
             cout << rst[i][j] << " ";
