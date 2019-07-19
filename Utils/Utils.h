@@ -23,4 +23,24 @@ ListNode* CreateList(vector<int> nums) {
     return head;
 }
 
+
+// 前缀树结点
+struct TrieNode {
+    bool isEnd;
+    struct TrieNode* child[128];
+    TrieNode() {
+        isEnd = false;
+        for(int i = 0; i < 128; ++i) {
+            child[i] = NULL;
+        }
+    }
+};
+typedef struct TrieNode TrieNode;
+
+
+
+// char To int
+int CharToInt(char ch) {
+    return ch - ' ' + 32;
+}
 #endif
