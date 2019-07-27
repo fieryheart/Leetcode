@@ -2,6 +2,7 @@
 #define _UTILS_H_
 
 #include <vector>
+#include <queue>
 using namespace std;
 
 struct Node {
@@ -42,5 +43,37 @@ typedef struct TrieNode TrieNode;
 // char To int
 int CharToInt(char ch) {
     return ch - ' ' + 32;
+}
+
+
+
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+typedef struct TreeNode TreeNode;
+
+TreeNode* createTree(vector<int>& nums, int &n, int i){
+    if(i >= n || nums[i] == -1) return NULL;
+    TreeNode* node = new TreeNode(nums[i]);
+    node->left = createTree(nums, n, i*2+1);
+    node->right = createTree(nums, n, i*2+2);
+    return node;
+}
+
+void levelOrder(TreeNode* root, vector<int> &ans) {
+    queue<TreeNode*> q;
+    q.push(root);
+    while(!q.empty()) {
+        TreeNode* temp = q.front();
+        q.pop();
+        if(temp) {
+            ans.push_back(temp->val);
+            q.push(temp->left);
+            q.push(temp->right);
+        } else ans.push_back(-1);
+    }
 }
 #endif
