@@ -1,3 +1,6 @@
+#include <iostream>
+#include <vector>
+using namespace std;
 class Solution {
 public:
     vector<int> spiralOrder(vector<vector<int>>& matrix) {
@@ -23,3 +26,22 @@ public:
         return ans;
     }
 };
+
+int main()
+{
+    int m, n;
+    cin >> m >> n;
+    vector<vector<int>> matrix(m, vector<int>(n, 0));
+    for(int i = 0; i < m; i++) {
+        for(int j = 0; j < n; j++) {
+            cin >> matrix[i][j];
+        }
+    }
+    Solution s;
+    vector<int> ans = s.spiralOrder(matrix);
+    for(int i = 0; i < ans.size(); ++i) {
+        if(i != 0) printf(" ");
+        printf("%d", ans[i]);
+    }
+    return 0;
+}
