@@ -3,6 +3,7 @@
  * @Date: 2019-11-21 14:42:54 
  * @Last Modified by: fiery
  * @Last Modified time: 2019-11-21 14:57:33
+ * @Desc: The key to solve this problem is traversal of the list. If the carry is not zero last, we will link to the end.
  */
 #include "../../lib/Root.h"
 
