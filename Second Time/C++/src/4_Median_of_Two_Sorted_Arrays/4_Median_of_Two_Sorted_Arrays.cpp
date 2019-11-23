@@ -2,10 +2,15 @@
  * @Author: fieryheart 
  * @Date: 2019-11-22 19:33:02 
  * @Last Modified by: fiery
- * @Last Modified time: 2019-11-22 20:27:30
+ * @Last Modified time: 2019-11-23 15:14:44
+ * @Desc: The process to solve it is too heavy, so i will give a reference to it next. 
+ * To be samplicity, keep it that the left is the same amount as the right and the max number of the left is less than or equal to the min number of the right.
+ * https://leetcode.com/problems/median-of-two-sorted-arrays/discuss/2481/Share-my-O(log(min(mn))-solution-with-explanation
  */
 
 #include "../../lib/Root.h"
+
+//==============================================================
 
 class Solution {
 public:
@@ -43,6 +48,8 @@ public:
         }
     }
 };
+
+//==============================================================
 
 int main()
 {

@@ -2,10 +2,12 @@
  * @Author: fieryheart 
  * @Date: 2019-11-21 14:42:54 
  * @Last Modified by: fiery
- * @Last Modified time: 2019-11-21 14:57:33
+ * @Last Modified time: 2019-11-23 15:15:04
  * @Desc: The key to solve this problem is traversal of the list. If the carry is not zero last, we will link to the end.
  */
 #include "../../lib/Root.h"
+
+//==============================================================
 
 class Solution {
 public:
@@ -30,6 +32,8 @@ public:
         return head;
     }
 };
+
+//==============================================================
 
 int main()
 {

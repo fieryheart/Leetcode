@@ -2,10 +2,12 @@
  * @Author: fieryheart 
  * @Date: 2019-11-22 18:40:44 
  * @Last Modified by: fiery
- * @Last Modified time: 2019-11-22 19:32:12
+ * @Last Modified time: 2019-11-23 15:14:54
  * @Desc: Use the hash table to keep the idx of item of substring, if the value of item in the hash table is after the left, then update left and the max length.
  */
 #include "../../lib/Root.h"
+
+//==============================================================
 
 class Solution {
 public:
@@ -22,6 +24,8 @@ public:
         return maxn;
     }
 };
+
+//==============================================================
 
 int main()
 {

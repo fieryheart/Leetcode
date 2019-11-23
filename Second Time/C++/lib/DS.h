@@ -2,7 +2,7 @@
  * @Author: fieryheart 
  * @Date: 2019-11-21 14:46:42 
  * @Last Modified by: fiery
- * @Last Modified time: 2019-11-21 15:02:53
+ * @Last Modified time: 2019-11-23 14:52:51
  * @Desc: Data Structure
  */
 #include <vector>
@@ -10,6 +10,8 @@
 #include <map>
 #include <queue>
 #include <stack>
+#include <cmath>
+#include <algorithm>
 using namespace std;
 
 
