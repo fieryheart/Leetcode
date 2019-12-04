@@ -21,6 +21,17 @@ class Print {
         }
 
         template <class T>
+        static void print(vector<vector<T>> &items, string desc=""){
+            showDesc(desc);
+            for(auto item : items) {
+                for(auto t : item) {
+                    cout << t << " ";
+                }
+                cout << endl;
+            }
+        }
+
+        template <class T>
         static void print(T &val, string desc="") {
             showDesc(desc);
             cout << val << endl;

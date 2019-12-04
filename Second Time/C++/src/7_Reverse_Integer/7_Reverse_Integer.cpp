@@ -3,7 +3,7 @@
  * @Date: 2019-11-23 14:45:34 
  * @Last Modified by: fiery
  * @Last Modified time: 2019-11-23 15:14:10
- * @Desc: It's easy when considering all boundary conditions well.
+ * @Desc: if considering all boundary conditions well, it will be easy.
  */
 
 #include "../../lib/Root.h"
